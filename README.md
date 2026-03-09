@@ -1,256 +1,156 @@
 ![MMM Pipeline](https://github.com/Samir-AISS/Mmm-multi-market-bayesian/actions/workflows/mmm_pipeline.yml/badge.svg)
+![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python&logoColor=white)
+![PyMC](https://img.shields.io/badge/PyMC-5.x-red?logo=python&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-live-ff4b4b?logo=streamlit&logoColor=white)
+![Prefect](https://img.shields.io/badge/Prefect-Cloud-blue?logo=prefect&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green)
 
-# 🎯 MMM Multi-Market Bayesian
+# Marketing Mix Modeling — Multi-Market Bayesian
 
-**Marketing Mix Modeling for Multi-Market Analysis using Bayesian Inference**
+A production-grade **Bayesian Marketing Mix Modeling** system analyzing marketing effectiveness across **10 European markets** and **5 channels**, inspired by Google Meridian and Meta Robyn.
 
-[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
-[![PyMC](https://img.shields.io/badge/PyMC-5.10-red.svg)](https://www.pymc.io/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
----
-
-## 📋 Table of Contents
-- [Overview](#overview)
-- [Key Features](#key-features)
-- [Project Architecture](#project-architecture)
-- [Installation](#installation)
-- [Quick Start](#quick-start)
-- [Data](#data)
-- [Methodology](#methodology)
-- [Results](#results)
-- [Dashboard](#dashboard)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
+**[Live Dashboard](https://mmm-multi-market-bayesian-jccbmodavvizmjzlcddjhc.streamlit.app)** · [Methodology](docs/methodology.md) · [API Reference](docs/api_reference.md)
 
 ---
 
-## 🌍 Overview
+## Results
 
-This project implements a **scalable Marketing Mix Modeling (MMM) solution** designed to analyze marketing effectiveness across **multiple markets** (countries/regions). Inspired by **Google's Meridian** and **Meta's Robyn**, it uses **Bayesian inference** with **PyMC-Marketing** to provide robust, interpretable insights into marketing ROI.
+| Market | R² | MAPE | Best Channel |
+|--------|----|------|--------------|
+| FR — France | 0.965 | 2.5% | Search |
+| DE — Germany | 0.967 | 2.5% | Search |
+| UK — United Kingdom | 0.964 | 2.6% | Search |
+| IT — Italy | 0.961 | 2.6% | Search |
+| ES — Spain | 0.963 | 2.7% | Search |
+| NL — Netherlands | 0.966 | 2.5% | Search |
+| BE — Belgium | 0.968 | 2.4% | Search |
+| PL — Poland | 0.964 | 2.5% | Search |
+| SE — Sweden | 0.965 | 2.5% | Search |
+| NO — Norway | 0.967 | 2.5% | Search |
 
-### **Business Context**
-Modern enterprises operate across multiple geographic markets, each with unique consumer behaviors, media consumption patterns, seasonal dynamics, and competitive landscapes.
-
-This project demonstrates how to:
-- ✅ Build and deploy MMM models at scale (10-100+ markets)
-- ✅ Quantify marketing impact with uncertainty estimates
-- ✅ Optimize budget allocation across channels and markets
-- ✅ Automate model training and monitoring pipelines
-
----
-
-## ⚡ Key Features
-
-### **Modeling**
-- 🎯 **Bayesian MMM** with PyMC-Marketing
-- 📊 **Adstock transformations** (geometric, delayed) for carryover effects
-- 📈 **Saturation curves** (Hill, logistic) for diminishing returns
-- 🧮 **Hierarchical models** for cross-market learning
-- 🔍 **MCMC diagnostics** (R-hat, ESS, posterior predictive checks)
-
-### **Scalability**
-- 🔄 **Parallel training** across markets
-- 📦 **MLflow tracking** for experiment management
-- 🚀 **Airflow orchestration** for automated pipelines
-
-### **Interpretability**
-- 💰 **Channel-level ROI** with credible intervals
-- 📉 **Contribution decomposition** (base sales, marketing, seasonality)
-- 🎨 **Response curves** for budget optimization
-- 📊 **Cross-market comparisons**
-
-### **Production-Ready**
-- 🧪 **Unit tests** with pytest
-- 📝 **Comprehensive documentation**
-- 🎛️ **Interactive Streamlit dashboard**
+**Avg R² : 0.965 · Avg MAPE : 2.5% · 0 divergences**
 
 ---
 
-## 🏗️ Project Architecture
+## Architecture
 
 ```
 mmm-multi-market-bayesian/
+├── .github/workflows/      # CI/CD — GitHub Actions (weekly pipeline)
+├── app/
+│   └── streamlit_app.py    # Interactive dashboard (Streamlit Cloud)
 ├── config/
-│   ├── model_config.yaml
-│   ├── markets_config.yaml
-│   └── priors.yaml
+│   ├── model_config.yaml   # MCMC hyperparameters, channels config
+│   ├── markets_config.yaml # Per-market parameters (GDP, seasonality...)
+│   └── priors.yaml         # Bayesian priors (HalfNormal, Beta, Gamma)
 ├── data/
-│   ├── raw/
-│   ├── processed/
 │   └── synthetic/
+│       └── mmm_multi_market.csv   # 2080 rows × 14 columns
 ├── notebooks/
 │   ├── 01_data_exploration.ipynb
 │   ├── 02_single_market_poc.ipynb
 │   ├── 03_multi_market_training.ipynb
 │   └── 04_model_diagnostics.ipynb
-├── src/
-│   ├── data/
-│   │   ├── data_loader.py
-│   │   ├── data_validator.py
-│   │   ├── feature_engineering.py
-│   │   └── multi_market_generator.py
-│   ├── models/
-│   │   ├── base_mmm.py
-│   │   ├── bayesian_mmm.py
-│   │   ├── adstock.py
-│   │   └── saturation.py
-│   ├── training/
-│   │   ├── distributed_trainer.py
-│   │   ├── hyperparameter_tuning.py
-│   │   └── model_diagnostics.py
-│   ├── evaluation/
-│   │   ├── metrics.py
-│   │   ├── model_validation.py
-│   │   └── roi_calculator.py
-│   └── utils/
-│       ├── logging_config.py
-│       └── visualization.py
 ├── pipelines/
-│   ├── airflow_dags/
+│   ├── airflow_dags/mmm_training_dag.py   # Airflow DAG
 │   └── orchestration/
-├── app/
-│   ├── streamlit_app.py
-│   └── components/
-├── tests/
-├── docs/
-│   ├── methodology.md
-│   ├── data_dictionary.md
-│   └── api_reference.md
+│       ├── run_pipeline.py                # Local orchestration
+│       └── prefect_flow.py               # Prefect Cloud flow
 ├── results/
-│   ├── models/
-│   ├── diagnostics/
-│   ├── reports/
-│   └── visualizations/
-├── requirements.txt
-├── .gitignore
-└── README.md
+│   ├── precomputed.pkl     # Pre-trained model outputs (dashboard)
+│   └── reports/            # Pipeline run reports
+├── scripts/
+│   └── precompute.py       # Generate precomputed.pkl
+├── src/
+│   ├── data/               # Generator, loader, validator, features
+│   ├── models/             # BayesianMMM, adstock, saturation
+│   ├── training/           # Distributed trainer, diagnostics, tuning
+│   ├── evaluation/         # Metrics, ROI calculator, validation
+│   └── utils/              # Logging, visualization
+└── tests/                  # 59 unit tests (pytest)
 ```
 
 ---
 
-## 🚀 Installation
+## Methodology
+
+```
+Revenue(t) = BaseSales
+           + Σ [ β_i × Adstock(Spend_i(t)) × Hill(Spend_i(t)) ]
+           + γ_season × Seasonality(t)
+           + γ_trend  × Trend(t)
+           + γ_events × Events(t)
+           + ε(t),   ε ~ Normal(0, σ)
+```
+
+**Adstock** — geometric carryover : `A[t] = spend[t] + decay × A[t-1]`
+
+**Saturation** — Hill function : `S(x) = x^s / (K^s + x^s)`
+
+**Priors** — weakly informative : `β ~ HalfNormal(1)` · `decay ~ Beta(2,2)` · `K ~ Gamma(3,1)`
+
+Full details → [docs/methodology.md](docs/methodology.md)
+
+---
+
+## Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Modeling | PyMC 5.x · ArviZ · NumPy |
+| Data | Pandas · Scikit-learn |
+| Orchestration | Prefect Cloud · Airflow DAG |
+| CI/CD | GitHub Actions (weekly) |
+| Dashboard | Streamlit Cloud |
+| Testing | pytest (59 tests) |
+| Tracking | MLflow |
+
+---
+
+## Quick Start
 
 ```bash
-git clone https://github.com/your-username/mmm-multi-market-bayesian.git
-cd mmm-multi-market-bayesian
-python -m venv venv
-source venv/bin/activate
+git clone https://github.com/Samir-AISS/Mmm-multi-market-bayesian.git
+cd Mmm-multi-market-bayesian
+python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
+
+# Generate synthetic data
 python src/data/multi_market_generator.py
-```
 
----
+# Run full pipeline
+python pipelines/orchestration/run_pipeline.py
 
-## ⚡ Quick Start
-
-```bash
-# 1. Explore data
-jupyter notebook notebooks/01_data_exploration.ipynb
-
-# 2. Train single market (POC)
-python src/training/train_single_market.py --market FR
-
-# 3. Train all markets
-python src/training/distributed_trainer.py --markets all
-
-# 4. Launch dashboard
+# Launch dashboard
 streamlit run app/streamlit_app.py
 ```
 
 ---
 
-## 📊 Data
-
-### **Source: Robyn (Meta/Facebook)**
-- **208 weeks** of historical data
-- **5 marketing channels**: TV, Out-of-Home, Print, Facebook, Search
-- **10 European markets**: FR, DE, UK, IT, ES, NL, BE, PL, SE, NO
-- **2 080 lignes** exactes (10 pays × 208 semaines)
-- **Validation : 0 erreur** sur 4 niveaux de tests
-
-| Market | GDP Index | Digital Maturity | TV Dominance | Seasonality   |
-|--------|-----------|------------------|--------------|---------------|
-| FR     | 1.00      | 0.85             | 0.70         | Standard      |
-| DE     | 1.15      | 0.90             | 0.65         | Standard      |
-| UK     | 1.10      | 0.95             | 0.60         | Mild          |
-| IT     | 0.85      | 0.75             | 0.75         | Mediterranean |
-| ES     | 0.80      | 0.78             | 0.72         | Mediterranean |
-| NL     | 1.25      | 0.98             | 0.50         | Standard      |
-| BE     | 1.05      | 0.88             | 0.68         | Standard      |
-| PL     | 0.65      | 0.82             | 0.78         | Eastern       |
-| SE     | 1.30      | 0.99             | 0.45         | Nordic        |
-| NO     | 1.50      | 0.97             | 0.48         | Nordic        |
-
----
-
-## 🧮 Methodology
-
-```
-Sales(t) = BaseSales
-         + Σ[β_i × Adstock(Spend_i(t)) × Saturation(Spend_i(t))]
-         + Seasonality(t) + Trend(t) + Events(t) + ε(t)
-```
-
-See [docs/methodology.md](docs/methodology.md) for full mathematical details.
-
----
-
-## 📈 Results
-
-*(To be populated after model training)*
-
-| Metric | Market FR | Market DE | Market UK | Average |
-|--------|-----------|-----------|-----------|---------|
-| R²     | TBD       | TBD       | TBD       | TBD     |
-| MAPE   | TBD       | TBD       | TBD       | TBD     |
-| NRMSE  | TBD       | TBD       | TBD       | TBD     |
-
----
-
-## 🎛️ Dashboard
+## Tests
 
 ```bash
-streamlit run app/streamlit_app.py
+pytest tests/ -v
+# 59 tests — adstock, saturation, metrics, data generator
 ```
 
 ---
 
-## 🧪 Testing
+## Dataset
 
-```bash
-pytest tests/ -v --cov=src
-```
-
----
-
-## 📜 License
-
-MIT License
+- **2 080 rows** — 10 markets × 208 weeks (4 years)
+- **14 columns** — revenue, 5 spend channels, seasonality, trend, events, promotions, competitor_price
+- **Synthetic** — generated with calibrated parameters (adstock, Hill saturation, market-specific seasonality)
+- **Validation** — 33 automated tests, 0 errors
 
 ---
 
-## 👤 Contact
+## Contact
 
-**Samir EL AISSAOUY** — Data Consultant | Data Engineer / Analyst
+**Samir EL AISSAOUY** — Data Consultant · Data Engineer / Analyst
 
-- 📧 Elaissaouy.samir12@gmail.com
-- 💼 [LinkedIn](https://www.linkedin.com/in/samir-el-aissaouy)
-- 📞 +33 7 52 07 68 61
-- 📍 Île-de-France, France
+[LinkedIn](https://www.linkedin.com/in/samir-el-aissaouy) · Elaissaouy.samir12@gmail.com · Île-de-France
 
 ---
 
-## 📊 Project Status
-
-🚧 **Active Development**
-
-- [x] Project structure
-- [ ] Data generation (multi_market_generator.py)
-- [ ] Single market POC
-- [ ] Multi-market training
-- [ ] Dashboard development
-- [ ] Documentation
-- [ ] Testing
-- [ ] Docker containerization
+*Inspired by [Google Meridian](https://developers.google.com/meridian) and [Meta Robyn](https://github.com/facebookexperimental/Robyn)*

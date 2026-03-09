@@ -1,38 +1,35 @@
-# Core
+# ── Core ──────────────────────────────────────────────────────────────────────
 pandas>=2.0.0
 numpy>=1.24.0
-scipy>=1.10.0
+scipy>=1.11.0
 
-# Bayesian modeling
-pymc>=5.10.0
-pymc-marketing>=0.5.0
+# ── Bayesian Modeling ─────────────────────────────────────────────────────────
+pymc>=5.0.0
 arviz>=0.16.0
-pytensor>=2.12.0
 
-# Visualization
+# ── ML ────────────────────────────────────────────────────────────────────────
+scikit-learn>=1.3.0
+
+# ── Visualization ─────────────────────────────────────────────────────────────
 matplotlib>=3.7.0
-plotly>=5.14.0
 seaborn>=0.12.0
+plotly>=5.15.0
 
-# Dashboard
+# ── Dashboard ─────────────────────────────────────────────────────────────────
 streamlit>=1.28.0
 
-# ML / Evaluation
-scikit-learn>=1.2.0
-
-# Pipeline / Orchestration
+# ── Orchestration ─────────────────────────────────────────────────────────────
+prefect>=2.14.0
 apache-airflow>=2.7.0
 
-# Experiment tracking
+# ── Parallel / Tracking ───────────────────────────────────────────────────────
+joblib>=1.3.0
 mlflow>=2.8.0
 
-# Testing
-pytest>=7.3.0
+# ── Utils ─────────────────────────────────────────────────────────────────────
+pyyaml>=6.0
+python-dotenv>=1.0.0
+
+# ── Testing ───────────────────────────────────────────────────────────────────
+pytest>=7.4.0
 pytest-cov>=4.1.0
-
-# Config
-pyyaml>=6.0.0
-
-# Utilities
-tqdm>=4.65.0
-joblib>=1.3.0

@@ -35,7 +35,7 @@ CHANNEL_COLORS = {
 }
 
 FIGURE_SIZE  = (12, 6)
-TITLE_STYLE  = {"fontsize": 14, "fontweight": "bold", "pad": 15}
+TITLE_STYLE  = {"fontsize": 14, "fontweight": "bold"}
 LABEL_STYLE  = {"fontsize": 11}
 GRID_STYLE   = {"alpha": 0.3, "linestyle": "--"}
 

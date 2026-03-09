@@ -153,8 +153,8 @@ streamlit run app/streamlit_app.py
 
 | Page               | Description                              |
 |--------------------|------------------------------------------|
-| 📊 Vue d'ensemble  | KPIs globaux, série temporelle revenue   |
-| 📈 Performance     | R², MAPE, actuel vs prédit               |
-| 💰 ROI par canal   | ROI avec intervalles de crédibilité      |
-| 🎯 Budget Optimizer| Simulation d'allocation budgétaire       |
-| 🌐 Cross-Market    | Heatmap et comparaison entre marchés     |
+| Vue d'ensemble  | KPIs globaux, série temporelle revenue   |
+| Performance     | R², MAPE, actuel vs prédit               |
+| ROI par canal   | ROI avec intervalles de crédibilité      |
+| Budget Optimizer| Simulation d'allocation budgétaire       |
+| Cross-Market    | Heatmap et comparaison entre marchés     |

@@ -21,10 +21,25 @@ import streamlit as st
 st.set_page_config(page_title="MMM Dashboard", layout="wide",
                    initial_sidebar_state="expanded")
 
+THEMES = {
+    "Dark": {
+        "bg": "#0D0F14", "surface": "#13161E", "surface2": "#1A1E2A",
+        "border": "#252A38", "accent": "#4F7EFF", "accent2": "#00D4AA",
+        "accent3": "#FF6B6B", "text": "#E8EAF0", "text_muted": "#6B7280",
+    },
+    "Light": {
+        "bg": "#F5F7FA", "surface": "#FFFFFF", "surface2": "#EEF1F6",
+        "border": "#D1D9E0", "accent": "#3B6FEF", "accent2": "#00A884",
+        "accent3": "#E05555", "text": "#1A1D23", "text_muted": "#6B7280",
+    },
+}
+
+if "theme" not in st.session_state:
+    st.session_state.theme = "Dark"
+
+_t = THEMES[st.session_state.theme]
 COLORS = {
-    "bg":         "#0D0F14", "surface":  "#13161E", "surface2": "#1A1E2A",
-    "border":     "#252A38", "accent":   "#4F7EFF", "accent2":  "#00D4AA",
-    "accent3":    "#FF6B6B", "text":     "#E8EAF0", "text_muted": "#6B7280",
+    **_t,
     "channels": {
         "tv": "#4F7EFF", "facebook": "#00D4AA",
         "search": "#FFB547", "ooh": "#FF6B6B", "print": "#A78BFA",
@@ -137,6 +152,13 @@ with st.sidebar:
         {'● Precomputed' if mode=='precomputed' else '● Live mode'}</span><br>
       10 markets · 208 weeks<br>5 channels · Bayesian NUTS
     </div>""", unsafe_allow_html=True)
+
+    st.markdown(f"<hr style='border-color:{COLORS['border']};margin:14px 0'>", unsafe_allow_html=True)
+    current_theme = st.session_state.theme
+    toggle_label = "☀️  Light mode" if current_theme == "Dark" else "🌙  Dark mode"
+    if st.button(toggle_label, use_container_width=True):
+        st.session_state.theme = "Light" if current_theme == "Dark" else "Dark"
+        st.rerun()
 
 # ── DATA HELPERS ──────────────────────────────────────────────────────────────
 def get_market_data(mkt):

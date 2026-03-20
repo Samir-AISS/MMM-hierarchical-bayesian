@@ -3,7 +3,6 @@ data_loader.py
 --------------
 Chargement et préparation des données MMM multi-marchés.
 """
-
 import pandas as pd
 import numpy as np
 from pathlib import Path

@@ -549,3 +549,4 @@ elif page == "Market Comparison":
     apply_layout(fig, height=310)
     fig.update_layout(margin=dict(l=40,r=60,t=30,b=16))
     st.plotly_chart(fig, use_container_width=True, config={"displayModeBar":False})
+    
